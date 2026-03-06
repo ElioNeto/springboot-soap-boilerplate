@@ -1,0 +1,10 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: springboot-soap-service
+
+logging:
+  level:
+    org.springframework.ws: DEBUG
