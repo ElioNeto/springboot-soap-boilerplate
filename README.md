@@ -1,46 +1,46 @@
 # Spring Boot SOAP Boilerplate
 
-Boilerplate completo para criar serviços SOAP usando Java, Spring Boot e JAX-WS.
+Complete boilerplate for creating SOAP services using Java, Spring Boot, and JAX-WS.
 
-## 🚀 Tecnologias
+## 🚀 Technologies
 
 - Java 17
 - Spring Boot 3.2.3
 - Spring Web Services
-- JAXB para binding XML
+- JAXB for XML binding
 - Maven
 
-## 📋 Pré-requisitos
+## 📋 Prerequisites
 
-- JDK 17 ou superior
+- JDK 17 or higher
 - Maven 3.6+
 
-## 🔧 Como usar
+## 🔧 How to Use
 
-### 1. Clone o repositório
+### 1. Clone the repository
 ```bash
 git clone https://github.com/ElioNeto/springboot-soap-boilerplate.git
 cd springboot-soap-boilerplate
 ```
 
-### 2. Compile o projeto
+### 2. Build the project
 ```bash
 mvn clean install
 ```
 
-### 3. Execute a aplicação
+### 3. Run the application
 ```bash
 mvn spring-boot:run
 ```
 
-A aplicação estará disponível em `http://localhost:8080`
+The application will be available at `http://localhost:8080`
 
-## 📚 Endpoints SOAP
+## 📚 SOAP Endpoints
 
 ### WSDL
-Acesse o WSDL em: `http://localhost:8080/ws/users.wsdl`
+Access the WSDL at: `http://localhost:8080/ws/users.wsdl`
 
-### Exemplo de requisição
+### Sample Request
 
 ```xml
 <soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/"
@@ -54,7 +54,7 @@ Acesse o WSDL em: `http://localhost:8080/ws/users.wsdl`
 </soapenv:Envelope>
 ```
 
-### Testando com cURL
+### Testing with cURL
 
 ```bash
 curl -X POST http://localhost:8080/ws \
@@ -62,46 +62,46 @@ curl -X POST http://localhost:8080/ws \
   -d '<soapenv:Envelope xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/" xmlns:user="http://example.com/soap/users"><soapenv:Header/><soapenv:Body><user:getUserRequest><user:id>1</user:id></user:getUserRequest></soapenv:Body></soapenv:Envelope>'
 ```
 
-## 📁 Estrutura do Projeto
+## 📁 Project Structure
 
 ```
 src/
 ├── main/
 │   ├── java/
 │   │   └── com/example/soap/
-│   │       ├── Application.java              # Classe principal
+│   │       ├── Application.java              # Main class
 │   │       ├── config/
-│   │       │   └── WebServiceConfig.java     # Configuração SOAP
+│   │       │   └── WebServiceConfig.java     # SOAP configuration
 │   │       └── endpoint/
-│   │           └── UserEndpoint.java         # Endpoint exemplo
+│   │           └── UserEndpoint.java         # Sample endpoint
 │   └── resources/
 │       ├── xsd/
-│       │   └── users.xsd                     # Schema XSD
-│       └── application.yml                    # Configurações
+│       │   └── users.xsd                     # XSD schema
+│       └── application.yml                    # Configuration
 ```
 
-## 🛠️ Adicionando novos serviços
+## 🛠️ Adding New Services
 
-### 1. Crie um novo schema XSD
-Adicione seu arquivo `.xsd` em `src/main/resources/xsd/`
+### 1. Create a new XSD schema
+Add your `.xsd` file to `src/main/resources/xsd/`
 
-### 2. Execute o Maven para gerar as classes
+### 2. Run Maven to generate classes
 ```bash
 mvn clean compile
 ```
-As classes Java serão geradas automaticamente em `target/generated-sources/jaxb/`
+Java classes will be automatically generated in `target/generated-sources/jaxb/`
 
-### 3. Crie um Endpoint
-Crie uma classe anotada com `@Endpoint` e implemente os métodos com `@PayloadRoot`
+### 3. Create an Endpoint
+Create a class annotated with `@Endpoint` and implement methods with `@PayloadRoot`
 
-### 4. Configure o WSDL
-Adicione um bean no `WebServiceConfig.java` para expor o WSDL
+### 4. Configure the WSDL
+Add a bean in `WebServiceConfig.java` to expose the WSDL
 
-## 📝 Licença
+## 📝 License
 
-Este projeto está sob a licença MIT.
+This project is licensed under the MIT License.
 
-## 👤 Autor
+## 👤 Author
 
 **Elio Neto**
 - GitHub: [@ElioNeto](https://github.com/ElioNeto)
