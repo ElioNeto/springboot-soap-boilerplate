@@ -1,6 +1,46 @@
-# Spring Boot SOAP Boilerplate
+# Spring Boot SOAP Service - Clean Architecture
 
-Complete boilerplate for creating SOAP services using Java, Spring Boot, and JAX-WS.
+Complete SOAP service boilerplate following Clean Architecture principles with Java, Spring Boot, and JAX-WS.
+
+## 🏛️ Architecture
+
+This project follows Clean Architecture with clear separation of concerns:
+
+```
+┌────────────────────────────────────────────┐
+│          Infrastructure Layer            │
+│   (SOAP Adapters, Persistence, Config)   │
+└─────────────┬──────────────────────────────┘
+             │
+┌─────────────┴──────────────────────────────┐
+│         Application Layer              │
+│        (Use Cases / Services)          │
+└─────────────┬──────────────────────────────┘
+             │
+┌─────────────┴──────────────────────────────┐
+│           Domain Layer                │
+│  (Entities, Ports, Business Logic)   │
+└────────────────────────────────────────────┘
+```
+
+### Layers
+
+**Domain Layer** (innermost)
+- Entities: Core business objects (`User`)
+- Ports: Interfaces defining contracts (`GetUserUseCase`, `UserRepositoryPort`)
+- Exceptions: Domain-specific exceptions
+- No dependencies on outer layers
+
+**Application Layer**
+- Use Cases: Business logic implementation (`GetUserUseCaseImpl`)
+- Orchestrates domain objects
+- Depends only on domain layer
+
+**Infrastructure Layer** (outermost)
+- Input Adapters: SOAP endpoints (`UserSoapEndpoint`)
+- Output Adapters: Repositories (`InMemoryUserRepository`)
+- Configuration: Spring configuration classes
+- Depends on application and domain layers
 
 ## 🚀 Technologies
 
@@ -8,6 +48,7 @@ Complete boilerplate for creating SOAP services using Java, Spring Boot, and JAX
 - Spring Boot 3.2.3
 - Spring Web Services
 - JAXB for XML binding
+- Lombok
 - Maven
 
 ## 📋 Prerequisites
@@ -65,37 +106,94 @@ curl -X POST http://localhost:8080/ws \
 ## 📁 Project Structure
 
 ```
-src/
-├── main/
-│   ├── java/
-│   │   └── com/example/soap/
-│   │       ├── Application.java              # Main class
-│   │       ├── config/
-│   │       │   └── WebServiceConfig.java     # SOAP configuration
-│   │       └── endpoint/
-│   │           └── UserEndpoint.java         # Sample endpoint
-│   └── resources/
-│       ├── xsd/
-│       │   └── users.xsd                     # XSD schema
-│       └── application.yml                    # Configuration
+src/main/java/com/example/soap/
+├── domain/                           # Domain Layer (Core)
+│   ├── entity/
+│   │   └── User.java                 # Domain entity
+│   ├── exception/
+│   │   └── UserNotFoundException.java
+│   └── port/
+│       ├── input/
+│       │   └── GetUserUseCase.java   # Input port (use case interface)
+│       └── output/
+│           └── UserRepositoryPort.java # Output port (repository interface)
+│
+├── application/                      # Application Layer
+│   └── usecase/
+│       └── GetUserUseCaseImpl.java   # Use case implementation
+│
+└── infrastructure/                   # Infrastructure Layer
+    ├── adapter/
+    │   ├── input/
+    │   │   └── soap/
+    │   │       └── UserSoapEndpoint.java # SOAP adapter
+    │   └── output/
+    │       └── persistence/
+    │           └── InMemoryUserRepository.java # Repository implementation
+    └── config/
+        └── WebServiceConfig.java     # Spring WS configuration
 ```
 
-## 🛠️ Adding New Services
+## 🛠️ Adding New Features
 
-### 1. Create a new XSD schema
-Add your `.xsd` file to `src/main/resources/xsd/`
+### 1. Create Domain Entity
+```java
+// domain/entity/YourEntity.java
+public class YourEntity {
+    // Business logic and data
+}
+```
 
-### 2. Run Maven to generate classes
+### 2. Define Ports
+```java
+// domain/port/input/YourUseCase.java
+public interface YourUseCase {
+    Result execute(Input input);
+}
+
+// domain/port/output/YourRepositoryPort.java
+public interface YourRepositoryPort {
+    Optional<Entity> findById(Long id);
+}
+```
+
+### 3. Implement Use Case
+```java
+// application/usecase/YourUseCaseImpl.java
+@Service
+public class YourUseCaseImpl implements YourUseCase {
+    // Business logic implementation
+}
+```
+
+### 4. Create Adapters
+```java
+// infrastructure/adapter/input/soap/YourSoapEndpoint.java
+@Endpoint
+public class YourSoapEndpoint {
+    // SOAP endpoint implementation
+}
+
+// infrastructure/adapter/output/persistence/YourRepository.java
+@Repository
+public class YourRepository implements YourRepositoryPort {
+    // Persistence implementation
+}
+```
+
+### 5. Add XSD Schema
+Create your `.xsd` file in `src/main/resources/xsd/` and run:
 ```bash
 mvn clean compile
 ```
-Java classes will be automatically generated in `target/generated-sources/jaxb/`
 
-### 3. Create an Endpoint
-Create a class annotated with `@Endpoint` and implement methods with `@PayloadRoot`
+## 🎯 Clean Architecture Benefits
 
-### 4. Configure the WSDL
-Add a bean in `WebServiceConfig.java` to expose the WSDL
+- **Independence**: Business logic is independent of frameworks, UI, and databases
+- **Testability**: Easy to unit test business rules without external dependencies
+- **Flexibility**: Easy to swap implementations (e.g., change from in-memory to database)
+- **Maintainability**: Clear separation of concerns makes code easier to understand and modify
+- **Scalability**: Well-organized structure supports growth
 
 ## 📝 License
 

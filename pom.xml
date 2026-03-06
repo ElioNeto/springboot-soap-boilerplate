@@ -15,11 +15,12 @@
     <groupId>com.example</groupId>
     <artifactId>springboot-soap-service</artifactId>
     <version>1.0.0</version>
-    <name>Spring Boot SOAP Service</name>
-    <description>Boilerplate for SOAP Web Services with Spring Boot</description>
+    <name>Spring Boot SOAP Service - Clean Architecture</name>
+    <description>SOAP Web Services with Spring Boot following Clean Architecture principles</description>
 
     <properties>
         <java.version>17</java.version>
+        <lombok.version>1.18.30</lombok.version>
     </properties>
 
     <dependencies>
@@ -30,6 +31,12 @@
         <dependency>
             <groupId>wsdl4j</groupId>
             <artifactId>wsdl4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <version>${lombok.version}</version>
+            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
